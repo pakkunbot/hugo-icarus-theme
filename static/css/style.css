@@ -2166,3 +2166,7 @@ ol.toc {
 .article-entry ul li {
   list-style-type: square;
 }
+
+header.archive-article-header {
+  padding: 5px;
+}
