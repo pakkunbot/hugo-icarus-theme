@@ -2,7 +2,7 @@
 <html lang="{{ with .Site.LanguageCode }}{{ . }}{{ else }}en-US{{ end }}">
 <head>
     <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} &middot; {{ .Site.Title }}{{ end }}</title>
-    {{ .Hugo.Generator }}
+    {{ hugo.Generator }}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     {{ with .Site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
@@ -11,9 +11,8 @@
     {{ else }}
       <meta name="description" content="{{ .Site.Params.site_description }}">
     {{ end }}
-    {{ with .RSSLink }}
-      <link href="{{ . }}" rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" />
-      <link href="{{ . }}" rel="feed" type="application/rss+xml" title="{{ $.Site.Title }}" />
+    {{ with .OutputFormats.Get "rss" -}}
+      {{ printf `<link rel=%q type=%q href=%q title=%q>` .Rel .MediaType.Type .Permalink site.Title | safeHTML }}
     {{ end }}
     <link rel="canonical" href="{{ .Permalink }}"/>
     <link rel="icon" href="{{ "favicon.ico" | absURL }}">
@@ -27,10 +26,6 @@
     {{ end }}
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
-    {{ template "_internal/opengraph.html" . }}
-    {{ template "_internal/google_news.html" . }}
-    {{ template "_internal/schema.html" . }}
-    {{ template "_internal/twitter_cards.html" . }}
     {{ partial "head_custom" . }}
 
     {{ if .Params.disable_profile | and .Params.disable_widgets }}
